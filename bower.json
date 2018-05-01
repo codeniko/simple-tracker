@@ -1,0 +1,32 @@
+{
+  "name": "simple-tracker",
+  "homepage": "https://github.com/codeniko/simple-tracker",
+  "_source": "git://github.com/codeniko/simple-tracker.git",
+  "_target": "*",
+  "_originalSource": "simple-tracker",
+  "_direct": true,
+  "version": "1.0.0",
+  "description": "A simple javascript client side tracker to log events and errors",
+  "main": "src/simple-tracker.js",
+  "keywords": [
+    "simple-tracker",
+    "logger",
+    "tracker",
+    "simple",
+    "jslogger",
+    "log"
+  ],
+  "authors": [
+    "Nikolay Feldman"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+  }
+}

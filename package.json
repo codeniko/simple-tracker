@@ -1,0 +1,35 @@
+{
+  "name": "simple-tracker",
+  "version": "1.0.0",
+  "description": "A simple javascript client side tracker to log events and errors",
+  "browser": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/codeniko/simple-tracker.git"
+  },
+  "scripts": {
+    "grunt": "grunt",
+    "test": "sed 's/(window, document)$//' src/simple-tracker.js | sed '1s/^/module.exports = /' > test/simple-tracker.js; ENV=tests ./node_modules/.bin/_mocha -R spec ./test/unit/**/*.js ./test/unit/**/**/*.js"
+  },
+  "author": "Nikolay Feldman",
+  "keywords": [
+    "simple-tracker",
+    "logger",
+    "tracker",
+    "simple",
+    "jslogger",
+    "log"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "bower": "^1.8.0",
+    "chai": "^4.1.2",
+    "grunt": "^1.0.1",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-uglify": "^3.0.1",
+    "jasmine": "^3.1.0",
+    "mocha": "^5.1.1",
+    "rewire": "^4.0.0",
+    "sinon": "^4.5.0"
+  }
+}
