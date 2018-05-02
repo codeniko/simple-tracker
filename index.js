@@ -88,6 +88,7 @@
 
       logException: function(exception) {
         this.push({
+          level: 'error',
           type: 'exception',
           exception: exception
         })

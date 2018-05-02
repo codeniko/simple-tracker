@@ -240,6 +240,7 @@ describe('simple-tracker', function() {
     assert.isTrue(mockRequest.send.calledOnce)
     assertSentRequest(mockEndpoint, {
       type: 'exception',
+      level: 'error',
       exception: {
         colno: 1,
         lineno: 1,
