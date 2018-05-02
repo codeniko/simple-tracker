@@ -398,4 +398,35 @@ describe('simple-tracker', function() {
     done()
   })
 
+  it('should persist singleton tracker across multiple loads', function(done) {
+    // 1st load
+    tracker.push({
+      endpoint: mockEndpoint,
+      sessionId:  mockSessionId,
+      attachClientContext: false,
+    })
+
+    tracker.push({ mockData1 })
+
+    assert.isTrue(mockRequest.open.calledOnce)
+    assert.isTrue(mockRequest.send.calledOnce)
+    assertSentRequest(mockEndpoint, {
+      sessionId: mockSessionId,
+      mockData1,
+    })
+
+    // second load, same window obj
+    simpleTracker(window, document)
+    tracker.push({ mockData2 })
+
+    assert.isTrue(mockRequest.open.calledTwice)
+    assert.isTrue(mockRequest.send.calledTwice)
+    assertSentRequest(mockEndpoint, {
+      sessionId: mockSessionId,
+      mockData2,
+    })
+
+    done()
+  })
+
 })

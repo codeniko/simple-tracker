@@ -54,13 +54,13 @@
       document.cookie = SESSION_KEY + '=' + value
     }
 
-    function Tracker() {
+    function SimpleTracker() {
       this.sendConsoleErrors = false
       this.attachClientContext = true
     }
 
     var timer = {}
-    Tracker.prototype = {
+    SimpleTracker.prototype = {
 
       // accessible to those have this tracker object so they can create their own onerror functions and still able to invoke default onerror behavior for our tracker. Useful if user has another tracking library like google analytics
       onerror: function(msg, url, line, col, err) {
@@ -206,27 +206,43 @@
       }
     }
 
-    var existingTracker = window.tracker // existing array of events to log that were added while this script was being fetched
-    var tracker = new Tracker()
+    var existingTracker = window.tracker // either instance of SimpleTracker or existing array of events to log that were added while this script was being loaded asyncronously
+    var tracker
 
-    // move all from existing and push into our tracker object
-    if (existingTracker && existingTracker.length) {
+    // reuse SimpleTracker instance if already created
+    if (existingTracker && existingTracker instanceof SimpleTracker) {
+      tracker = existingTracker
+    } else if (existingTracker && existingTracker.length) {
+      // move all from existing and push into our tracker object
+      tracker = new SimpleTracker()
       var i = 0
       var length = existingTracker.length
       for (i = 0; i < length; i++) {
         tracker.push(existingTracker[i])
       }
+    } else {
+      tracker = new SimpleTracker()
     }
 
     window.tracker = tracker
+    window.SimpleTracker = SimpleTracker
+    return tracker
   }
 
 
-  if (typeof module !== 'undefined' && module.exports) {
+  var isModule = typeof module !== 'undefined' && module.exports
+  if (typeof window !== 'undefined') {
+    var tracker = simpleTracker(window, window.document) // sets window.tracker
+    if (isModule) {
+      simpleTracker.default = tracker
+      module.exports = tracker
+    }
+  } else if (isModule) {
+    // for testing
     simpleTracker.default = simpleTracker
     module.exports = simpleTracker
   } else {
-    simpleTracker(window, window.document)
+    throw new Error('')
   }
 })()
 
