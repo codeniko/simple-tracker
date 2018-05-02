@@ -3,7 +3,7 @@
 const assert = require('chai').assert
 const sinon = require('sinon')
 
-const simpleTracker = require('../simple-tracker.js')
+const simpleTracker = require('../../')
 
 describe('simple-tracker', function() {
 

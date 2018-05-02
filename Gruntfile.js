@@ -9,7 +9,7 @@ module.exports = function (grunt) {
       },
       main: {
         files: [{
-          src: 'src/simple-tracker.js',
+          src: 'index.js',
           dest: 'dist/simple-tracker.min.js'
         }]
       },

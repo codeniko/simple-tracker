@@ -7,7 +7,7 @@
   "_direct": true,
   "version": "1.0.0",
   "description": "A simple javascript client side tracker to log events and errors",
-  "main": "src/simple-tracker.js",
+  "main": "dist/simple-tracker.min.js",
   "keywords": [
     "simple-tracker",
     "logger",

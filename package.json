@@ -2,14 +2,14 @@
   "name": "simple-tracker",
   "version": "0.0.0",
   "description": "A simple javascript client side tracker to log events and errors",
-  "browser": "index.js",
+  "main": "dist/simple-tracker.min.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/codeniko/simple-tracker.git"
   },
   "scripts": {
     "build": "grunt",
-    "test": "sed 's/(window, document)$//' src/simple-tracker.js | sed '1s/^/module.exports = /' > test/simple-tracker.js; ENV=tests ./node_modules/.bin/_mocha -R spec ./test/unit/**/*.js ./test/unit/**/**/*.js"
+    "test": "ENV=tests ./node_modules/.bin/_mocha -R spec ./test/unit/**/*.js ./test/unit/**/**/*.js"
   },
   "author": "Nikolay Feldman",
   "keywords": [
