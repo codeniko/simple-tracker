@@ -59,6 +59,7 @@
       this.attachClientContext = true
     }
 
+    var timer = {}
     Tracker.prototype = {
 
       // accessible to those have this tracker object so they can create their own onerror functions and still able to invoke default onerror behavior for our tracker. Useful if user has another tracking library like google analytics
@@ -70,14 +71,71 @@
           stack: err ? err.stack : 'n/a'
         }
 
-        this.push({
-          exception: exception
-        })
+        this.logException(exception)
       },
 
       setSession: function(sessionId) {
         this.sessionId = sessionId || this.sessionId || readCookie() || uuidv4()
         setCookie(this.sessionId)
+      },
+
+      logEvent: function(event) {
+        this.push({
+          type: 'event',
+          event: event
+        })
+      },
+
+      logException: function(exception) {
+        this.push({
+          type: 'exception',
+          exception: exception
+        })
+      },
+
+      logMessage: function(level, message) {
+        this.push({
+          type: 'message',
+          level: level,
+          message: message
+        })
+      },
+
+      logMetric: function(metric, value) {
+        this.push({
+          type: 'metric',
+          metric: metric,
+          value: value
+        })
+      },
+
+      startTimer: function(metric) {
+        var performance = window.performance
+        if (performance.now) {
+          if (timer[metric]) {
+            console.warn("Timing metric '" + metric + "' already started")
+          }
+          console.debug('timer started for:', metric)
+          timer[metric] = performance.now()
+        } else {
+          console.warn('window.performance is not defined')
+        }
+      },
+
+      stopTimer: function(metric) {
+        var performance = window.performance
+        if (performance.now) {
+          var stopTime = performance.now()
+          var startTime = timer[metric]
+          if (startTime !== undefined) {
+            var diff = Math.round(stopTime - startTime)
+            timer[metric] = undefined
+            console.debug('timer stopped for:', metric, 'time=' + diff)
+            this.logMetric(metric, diff)
+          } else {
+            console.warn("Timing metric '" + metric + "' wasn't started")
+          }
+        }
       },
 
       push: function(data) {

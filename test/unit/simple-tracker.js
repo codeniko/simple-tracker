@@ -3,9 +3,18 @@
 const assert = require('chai').assert
 const sinon = require('sinon')
 
-const simpleTracker = require('../../')
+const simpleTracker = require('../../index.js')
+
+function silenceConsoleLogs() {
+  // dont silence console.log as that will hide test results
+  console.info = () => {}
+  console.error = () => {}
+  console.warn = () => {}
+  console.debug = () => {}
+}
 
 describe('simple-tracker', function() {
+  silenceConsoleLogs()
 
   let window, document, tracker, mockRequest
   const mockEndpoint = '**ENDPOINT**'
@@ -41,6 +50,9 @@ describe('simple-tracker', function() {
         platform: mockPlatform,
       },
       onerror: onerrorSpy,
+      performance: {
+        now: sinon.stub(),
+      }
     }
     document = {
       cookie: '',
@@ -59,7 +71,7 @@ describe('simple-tracker', function() {
 
     const lastRequestIndex = mockRequest.open.callCount - 1
     const callIndex = requestIndex !== undefined ? requestIndex : lastRequestIndex // ternary op because requestIndex could be 0, which would then use last invocation
-    const openSpy = mockRequest.open.getCall(callIndex) // assert specific request or assert last invocation. 
+    const openSpy = mockRequest.open.getCall(callIndex) // assert specific request or assert last invocation.
     assert.equal(openSpy.args[0], 'POST')
     assert.equal(openSpy.args[1], expectedEndpoint)
     assert.isTrue(openSpy.args[2])
@@ -227,6 +239,7 @@ describe('simple-tracker', function() {
     assert.isTrue(mockRequest.open.calledOnce)
     assert.isTrue(mockRequest.send.calledOnce)
     assertSentRequest(mockEndpoint, {
+      type: 'exception',
       exception: {
         colno: 1,
         lineno: 1,
@@ -306,6 +319,79 @@ describe('simple-tracker', function() {
     assertSentRequest(mockEndpoint, {
       mockData2,
       mockCookieValue,
+      sessionId: mockSessionId,
+    })
+    done()
+  })
+
+  it('should log events', function(done) {
+    tracker.push({
+      endpoint: mockEndpoint,
+      sessionId:  mockSessionId,
+      attachClientContext: false,
+    })
+    tracker.logEvent(mockData1)
+
+    assertSentRequest(mockEndpoint, {
+      type: 'event',
+      event: mockData1,
+      sessionId: mockSessionId,
+    })
+    done()
+  })
+
+  it('should log message', function(done) {
+    tracker.push({
+      endpoint: mockEndpoint,
+      sessionId:  mockSessionId,
+      attachClientContext: false,
+    })
+    const level = 'info'
+    tracker.logMessage(level, mockData1)
+
+    assertSentRequest(mockEndpoint, {
+      level,
+      type: 'message',
+      message: mockData1,
+      sessionId: mockSessionId,
+    })
+    done()
+  })
+
+  it('should log metric', function(done) {
+    tracker.push({
+      endpoint: mockEndpoint,
+      sessionId:  mockSessionId,
+      attachClientContext: false,
+    })
+    tracker.logMetric(mockData1, mockData2)
+
+    assertSentRequest(mockEndpoint, {
+      type: 'metric',
+      metric: mockData1,
+      value: mockData2,
+      sessionId: mockSessionId,
+    })
+    done()
+  })
+
+  it('should log timing metric', function(done) {
+    const perfStub = window.performance.now
+    perfStub.onCall(0).returns(1000.000005)
+    perfStub.onCall(1).returns(5000.700001)
+
+    tracker.push({
+      endpoint: mockEndpoint,
+      sessionId:  mockSessionId,
+      attachClientContext: false,
+    })
+    tracker.startTimer(mockData1)
+    tracker.stopTimer(mockData1)
+
+    assertSentRequest(mockEndpoint, {
+      type: 'metric',
+      metric: mockData1,
+      value: 4001,
       sessionId: mockSessionId,
     })
     done()
