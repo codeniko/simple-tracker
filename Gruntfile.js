@@ -5,12 +5,12 @@ module.exports = function (grunt) {
     uglify: {
       options: {
         sourceMap: true,
-        sourceMapName: 'dist/tracker.min.map'
+        sourceMapName: 'dist/simple-tracker.min.map'
       },
       main: {
         files: [{
-          src: 'src/tracker.js',
-          dest: 'dist/tracker.min.js'
+          src: 'src/simple-tracker.js',
+          dest: 'dist/simple-tracker.min.js'
         }]
       },
     }
