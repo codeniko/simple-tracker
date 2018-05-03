@@ -95,12 +95,18 @@
         })
       },
 
-      logMessage: function(level, message) {
-        this.push({
+      logMessage: function(message, level) {
+        var data = {
           type: 'message',
-          level: level,
           message: message
-        })
+        }
+
+        // add optional level if defined, not included otherwise
+        if (level) {
+          data.level = level
+        }
+
+        this.push(data)
       },
 
       logMetric: function(metric, value) {

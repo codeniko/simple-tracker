@@ -348,7 +348,7 @@ describe('simple-tracker', function() {
       attachClientContext: false,
     })
     const level = 'info'
-    tracker.logMessage(level, mockData1)
+    tracker.logMessage(mockData1, level)
 
     assertSentRequest(mockEndpoint, {
       level,
