@@ -1,6 +1,6 @@
 {
   "name": "simple-tracker",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A simple javascript client side tracker to log events and errors",
   "main": "dist/simple-tracker.min.js",
   "repository": {
