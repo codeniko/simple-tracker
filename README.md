@@ -34,7 +34,7 @@ Installation in HTML
 ------------
 Place the following on your page
 ```html
-<script type="text/javascript" src="/simple-tracker.min.js" async></script>
+<script type="text/javascript" src="/dist/simple-tracker.min.js" async></script>
 <script>
   var tracker = tracker || [];
   
