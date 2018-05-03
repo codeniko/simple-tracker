@@ -195,7 +195,7 @@
             var xmlHttp = new window.XMLHttpRequest()
             xmlHttp.open('POST', this.endpoint, true) // true for async
             xmlHttp.setRequestHeader('Content-Type', 'application/json')
-            xmlHttp.send(data)
+            xmlHttp.send(JSON.stringify(data))
           } catch(ex) {
             if (window.console && typeof window.console.log === 'function') {
               console.log('Failed to send tracking request because of this exception:\n' + ex)

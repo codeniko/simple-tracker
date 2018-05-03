@@ -77,7 +77,7 @@ describe('simple-tracker', function() {
     assert.isTrue(openSpy.args[2])
 
     const sendSpy = mockRequest.send.getCall(callIndex)
-    assert.deepEqual(sendSpy.args[0], expectedData)
+    assert.deepEqual(JSON.parse(sendSpy.args[0]), expectedData)
 
     assert.isTrue(mockRequest.setRequestHeader.getCall(callIndex).calledWith('Content-Type', 'application/json'))
   }
