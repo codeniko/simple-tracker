@@ -57,6 +57,7 @@
     function SimpleTracker() {
       this.sendConsoleErrors = false
       this.attachClientContext = true
+      this.devMode = false
     }
 
     var timer = {}
@@ -151,6 +152,12 @@
             text: data
           }
         } else {
+          // toggle devmode, where requests wont be sent, but logged in console for debugging instead
+          if (data.devMode !== undefined) {
+            this.devMode = !!data.devMode
+            delete data.devMode
+          }
+
           if (data.attachClientContext !== undefined) {
             this.attachClientContext = !!data.attachClientContext
             delete data.attachClientContext
@@ -190,17 +197,21 @@
             data.context = getClientContext(this)
           }
 
-          try {
-            // let's not use fetch to avoid a polyfill
-            var xmlHttp = new window.XMLHttpRequest()
-            xmlHttp.open('POST', this.endpoint, true) // true for async
-            xmlHttp.setRequestHeader('Content-Type', 'application/json')
-            xmlHttp.send(JSON.stringify(data))
-          } catch(ex) {
-            if (window.console && typeof window.console.log === 'function') {
-              console.log('Failed to send tracking request because of this exception:\n' + ex)
-              console.log('Failed tracking data:', data)
+          if (!this.devMode) {
+            try {
+              // let's not use fetch to avoid a polyfill
+              var xmlHttp = new window.XMLHttpRequest()
+              xmlHttp.open('POST', this.endpoint, true) // true for async
+              xmlHttp.setRequestHeader('Content-Type', 'application/json')
+              xmlHttp.send(JSON.stringify(data))
+            } catch(ex) {
+              if (window.console && typeof window.console.log === 'function') {
+                console.log('Failed to send tracking request because of this exception:\n' + ex)
+                console.log('Failed tracking data:', data)
+              }
             }
+          } else {
+            console.debug('Simple-Tracker: POST '+this.endpoint, data)
           }
         }
       }

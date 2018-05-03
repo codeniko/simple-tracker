@@ -429,4 +429,19 @@ describe('simple-tracker', function() {
     done()
   })
 
+  it('dont send request out in devMode', function(done) {
+    tracker.push({
+      endpoint: mockEndpoint,
+      sessionId:  mockSessionId,
+      devMode: true,
+    })
+
+    tracker.push({ mockData1 })
+
+    assert.isTrue(mockRequest.open.notCalled)
+    assert.isTrue(mockRequest.send.notCalled)
+
+    done()
+  })
+
 })
