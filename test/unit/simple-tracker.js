@@ -88,7 +88,7 @@ describe('simple-tracker', function() {
 
 
   it('Initialized correctly', function(done) {
-    assert.isFalse(tracker.sendConsoleErrors)
+    assert.isFalse(tracker.sendCaughtExceptions)
     assert.isFunction(tracker.onerror)
     done()
   })
@@ -96,7 +96,7 @@ describe('simple-tracker', function() {
   it('should not send request if no data to send', function(done) {
     tracker.push({
       endpoint: mockEndpoint,
-      sendConsoleErrors: true,
+      sendCaughtExceptions: true,
       sessionId:  mockSessionId,
     })
 
@@ -108,7 +108,7 @@ describe('simple-tracker', function() {
   it('should send request if there is data to send', function(done) {
     tracker.push({
       endpoint: mockEndpoint,
-      sendConsoleErrors: true,
+      sendCaughtExceptions: true,
       sessionId:  mockSessionId,
       attachClientContext: false,
       mockData1,
@@ -228,7 +228,7 @@ describe('simple-tracker', function() {
     tracker.push({
       endpoint: mockEndpoint,
       sessionId:  mockSessionId,
-      sendConsoleErrors: true,
+      sendCaughtExceptions: true,
       attachClientContext: false,
     })
     const mockError = Error(mockData2)
@@ -256,7 +256,7 @@ describe('simple-tracker', function() {
     tracker.push({
       endpoint: mockEndpoint,
       sessionId:  mockSessionId,
-      sendConsoleErrors: false,
+      sendCaughtExceptions: false,
       attachClientContext: false,
     })
     const mockError = Error(mockData2)

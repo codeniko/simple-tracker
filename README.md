@@ -17,7 +17,7 @@ import tracker from 'simple-tracker' // or const tracker = require('simple-track
 // initialize tracker endpoint and settings
 tracker.push({
   endpoint: '/my/tracker/server/endpoint'
-  sendConsoleErrors: true,
+  sendCaughtExceptions: true,
   attachClientContext: true,
 });
 ```
@@ -41,7 +41,7 @@ Place the following on your page
   // initialize tracker endpoint and settings
   tracker.push({
     endpoint: '/my/tracker/server/endpoint'
-    sendConsoleErrors: true,
+    sendCaughtExceptions: true,
     attachClientContext: true,
   });
 </script>

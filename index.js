@@ -55,7 +55,7 @@
     }
 
     function SimpleTracker() {
-      this.sendConsoleErrors = false
+      this.sendCaughtExceptions = false
       this.attachClientContext = true
       this.devMode = false
     }
@@ -177,13 +177,13 @@
             delete data.endpoint
           }
 
-          if (data.sendConsoleErrors !== undefined) {
-            var shouldSend = !!data.sendConsoleErrors
-            this.sendConsoleErrors = shouldSend
+          if (data.sendCaughtExceptions !== undefined) {
+            var shouldSend = !!data.sendCaughtExceptions
+            this.sendCaughtExceptions = shouldSend
             if (shouldSend) {
               setOnError(this, this.onerror)
             }
-            delete data.sendConsoleErrors
+            delete data.sendCaughtExceptions
           }
         }
 
