@@ -1,5 +1,7 @@
 Simple Tracker
 ===============
+[![NPM version](https://img.shields.io/npm/v/simple-tracker.svg)](https://npmjs.org/package/simple-tracker)
+
 A simple javascript client side tracker to send tracking data, including events, logs, and errors.
 
 You can use Simple Tracker one of two ways. You can install through [npm and use it as a module](#installation-through-npm-as-module), or you can [include the uglified script file in your HTML page](#installation-in-html).
