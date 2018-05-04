@@ -28,7 +28,7 @@ import tracker from 'simple-tracker' // or const tracker = require('simple-track
 
 // initialize tracker endpoint and settings
 tracker.push({
-  endpoint: '/my/tracker/server/endpoint', // tracker endpoint to send requests to
+  endpoint: '/my/tracker/server/endpoint', // endpoint to send tracking data to
   sendCaughtExceptions: true, // send exceptions caught by browser
   attachClientContext: true, // attach various client context, such as useragent, platform, and page url
 });
@@ -49,10 +49,10 @@ Place the following on your page
 <script type="text/javascript" src="/dist/simple-tracker.min.js" async></script>
 <script>
   var tracker = tracker || [];
-  
+
   // initialize tracker endpoint and settings
   tracker.push({
-    endpoint: '/my/tracker/server/endpoint', // tracker endpoint to send requests to
+    endpoint: '/my/tracker/server/endpoint', // endpoint to send tracking data to
     sendCaughtExceptions: true, // send exceptions caught by browser
     attachClientContext: true, // attach various client context, such as useragent, platform, and page url
   });
@@ -95,14 +95,18 @@ This will send a POST request containing a sessionId, and client context if enab
 
 There are also several helper methods defined to push common tracking data such as `tracker.logEvent(event)`, `tracker.logMessage('message')`, and `tracker.logMetric('metric', 'value')`. [You can find examples of these and more below.](#examples)
 
+Session Id
+-----
+Simple Tracker makes use of cookies to persist the sessionId that accompanies all tracking data. If the sessionId is not explicitly set in [configuration](#all-configurations), one will be generated as a UUIDv4 string. Regardless if explicitly set or generated, the sessionId will be stored in a cookie named `trcksesh` and will be destroyed when session ends (browser closes)
+
 All Configurations
 -----
 ```javascript
 tracker.push({
-  endpoint: '/ENDPOINT', // tracker endpoint to send requests to
+  endpoint: '/ENDPOINT', // endpoint to send tracking data to
   sendCaughtExceptions: true/false, // send exceptions caught by browser
   attachClientContext: true/false, // attach various client context, such as useragent, platform, and page url
-  sessionId: 'SESSION_ID', // explicitly set a session id, rather than generating one or reading from cookie
+  sessionId: 'SESSION_ID', // explicitly set a session id
   devMode: true/false // toggle dev mode. If enabled, outgoing requests are blocked and logged for debugging instead
 });
 ```
@@ -202,17 +206,12 @@ tracker.push({
 }
 ```
 
-
-Contributing
+Bugs, feature requests, & contributing
 -----
-You can build uglified js file and its associated map file by running below commands. Files will be generated inside `/dist` dir.
-```sh
-npm install
-grunt
-```
+If you found a bug or want to request a feature, [create a new issue](https://github.com/codeniko/simple-tracker/issues). Contributions are more than welcome :)
 
-Running unit tests
+Running unit tests and code coverage
 ----------
 ```sh
-npm run test
+npm test
 ```
