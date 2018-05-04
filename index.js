@@ -11,12 +11,21 @@
     var SESSION_KEY = 'trcksesh'
     var SESSION_KEY_LENGTH = SESSION_KEY.length + 1
 
+    var sendCaughtExceptions = true
+    var attachClientContext = true
+    var devMode = false
+    var endpoint
+    var sessionId
+    var tracker
+    var timer = {}
+    var clientContext
+
     function uuidv4(a) {
       return a?(a^Math.random()*16>>a/4).toString(16):([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,uuidv4)
     }
 
     // override to call own onerror function, followed by original onerror
-    function setOnError(tracker, f) {
+    function setOnError(f) {
       var _onerror = window.onerror
       // msg, url, line, col, err
       window.onerror = function() {
@@ -27,17 +36,16 @@
       }
     }
 
-    function getClientContext(tracker) {
+    function getClientContext() {
       // get cached context, or create one
-      if (!tracker.clientContext) {
-        var context = {
+      if (!clientContext) {
+        clientContext = {
           url: window.location.href,
           userAgent: window.navigator.userAgent || null,
           platform: window.navigator.platform || null
         }
-        tracker.clientContext = context
       }
-      return tracker.clientContext
+      return clientContext
     }
 
     function readCookie() {
@@ -54,16 +62,42 @@
       document.cookie = SESSION_KEY + '=' + value
     }
 
-    function SimpleTracker() {
-      this.sendCaughtExceptions = false
-      this.attachClientContext = true
-      this.devMode = false
+    function setSession(newSessionId) {
+      sessionId = newSessionId || sessionId || readCookie() || uuidv4()
+      setCookie(sessionId)
     }
 
-    var timer = {}
+    function track(data) {
+      if (endpoint && Object.keys(data).length > 0) {
+        data.sessionId = sessionId
+        if (attachClientContext) {
+          data.context = getClientContext()
+        }
+
+        if (!devMode) {
+          try {
+            // let's not use fetch to avoid a polyfill
+            var xmlHttp = new window.XMLHttpRequest()
+            xmlHttp.open('POST', endpoint, true) // true for async
+            xmlHttp.setRequestHeader('Content-Type', 'application/json')
+            xmlHttp.send(JSON.stringify(data))
+          } catch(ex) {
+            if (window.console && typeof window.console.log === 'function') {
+              console.log('Failed to send tracking request because of this exception:\n' + ex)
+              console.log('Failed tracking data:', data)
+            }
+          }
+        } else {
+          console.debug('SimpleTracker: POST ' + endpoint, data)
+        }
+      }
+    }
+
+    function SimpleTracker() {}
+
     SimpleTracker.prototype = {
 
-      // accessible to those have this tracker object so they can create their own onerror functions and still able to invoke default onerror behavior for our tracker. Useful if user has another tracking library like google analytics
+      // accessible to those have this tracker object so they can create their own onerror functions and still able to invoke default onerror behavior for our tracker.
       onerror: function(msg, url, line, col, err) {
         var exception = {
           message: msg,
@@ -73,11 +107,6 @@
         }
 
         this.logException(exception)
-      },
-
-      setSession: function(sessionId) {
-        this.sessionId = sessionId || this.sessionId || readCookie() || uuidv4()
-        setCookie(this.sessionId)
       },
 
       logEvent: function(event) {
@@ -160,71 +189,44 @@
         } else {
           // toggle devmode, where requests wont be sent, but logged in console for debugging instead
           if (data.devMode !== undefined) {
-            this.devMode = !!data.devMode
+            devMode = !!data.devMode
             delete data.devMode
           }
 
           if (data.attachClientContext !== undefined) {
-            this.attachClientContext = !!data.attachClientContext
+            attachClientContext = !!data.attachClientContext
             delete data.attachClientContext
           }
 
           if (data.sessionId) {
-            this.setSession(data.sessionId)
+            setSession(data.sessionId)
             delete data.sessionId
           }
 
           if (data.endpoint) {
             // other initializations should go here since endpoint is the only required property that needs to be set
-            if (!this.sessionId) {
-              this.setSession()
+            if (!sessionId) {
+              setSession()
             }
-            this.endpoint = data.endpoint
+            endpoint = data.endpoint
             delete data.endpoint
           }
 
           if (data.sendCaughtExceptions !== undefined) {
             var shouldSend = !!data.sendCaughtExceptions
-            this.sendCaughtExceptions = shouldSend
+            sendCaughtExceptions = shouldSend
             if (shouldSend) {
-              setOnError(this, this.onerror)
+              setOnError(this.onerror)
             }
             delete data.sendCaughtExceptions
           }
         }
 
-        this.track(data)
-      },
-
-      track: function(data) {
-        if (this.endpoint && Object.keys(data).length > 0) {
-          data.sessionId = this.sessionId
-          if (this.attachClientContext) {
-            data.context = getClientContext(this)
-          }
-
-          if (!this.devMode) {
-            try {
-              // let's not use fetch to avoid a polyfill
-              var xmlHttp = new window.XMLHttpRequest()
-              xmlHttp.open('POST', this.endpoint, true) // true for async
-              xmlHttp.setRequestHeader('Content-Type', 'application/json')
-              xmlHttp.send(JSON.stringify(data))
-            } catch(ex) {
-              if (window.console && typeof window.console.log === 'function') {
-                console.log('Failed to send tracking request because of this exception:\n' + ex)
-                console.log('Failed tracking data:', data)
-              }
-            }
-          } else {
-            console.debug('Simple-Tracker: POST '+this.endpoint, data)
-          }
-        }
+        track(data)
       }
     }
 
     var existingTracker = window.tracker // either instance of SimpleTracker or existing array of events to log that were added while this script was being loaded asyncronously
-    var tracker
 
     // reuse SimpleTracker instance if already created
     if (existingTracker && existingTracker instanceof SimpleTracker) {

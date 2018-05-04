@@ -88,7 +88,6 @@ describe('simple-tracker', function() {
 
 
   it('Initialized correctly', function(done) {
-    assert.isFalse(tracker.sendCaughtExceptions)
     assert.isFunction(tracker.onerror)
     done()
   })

@@ -29,7 +29,6 @@ import tracker from 'simple-tracker' // or const tracker = require('simple-track
 // initialize tracker endpoint and settings
 tracker.push({
   endpoint: '/my/tracker/server/endpoint', // endpoint to send tracking data to
-  sendCaughtExceptions: true, // send exceptions caught by browser
   attachClientContext: true, // attach various client context, such as useragent, platform, and page url
 });
 ```
@@ -53,7 +52,6 @@ Place the following on your page
   // initialize tracker endpoint and settings
   tracker.push({
     endpoint: '/my/tracker/server/endpoint', // endpoint to send tracking data to
-    sendCaughtExceptions: true, // send exceptions caught by browser
     attachClientContext: true, // attach various client context, such as useragent, platform, and page url
   });
 </script>
@@ -70,16 +68,11 @@ Logging JSON:
 ```javascript
 tracker.push({
   message: 'my tracking string',
-  values: [1, 2, 3, 'a', 'b', 'c'],
-  context: {
-    url: window.location.href,
-    userAgent: window.navigator.userAgent || null,
-    platform: window.navigator.platform || null
-  }
+  values: [1, 2, 3, 'a', 'b', 'c']
 });
 ```
 
-This will send a POST request containing a sessionId, and client context if enabled. An example request payload:
+This will send a POST request containing a sessionId, and client context if enabled (enabled by default). An example request payload:
 ```json
 {
   "sessionId": "11bf5b37-e0b8-42e0-8dcf-dc8c4aefc000",
@@ -104,10 +97,10 @@ All Configurations
 ```javascript
 tracker.push({
   endpoint: '/ENDPOINT', // endpoint to send tracking data to
-  sendCaughtExceptions: true/false, // send exceptions caught by browser
-  attachClientContext: true/false, // attach various client context, such as useragent, platform, and page url
+  sendCaughtExceptions: true/false, // send exceptions caught by browser. DEFAULT: true
+  attachClientContext: true/false, // attach various client context, such as useragent, platform, and page url. DEFAULT: true
   sessionId: 'SESSION_ID', // explicitly set a session id
-  devMode: true/false // toggle dev mode. If enabled, outgoing requests are blocked and logged for debugging instead
+  devMode: true/false // toggle dev mode. If enabled, outgoing requests are blocked and logged for debugging instead. DEFAULT: false
 });
 ```
 
@@ -186,7 +179,8 @@ tracker.stopTimer('page_load_time');
 tracker.push({
   message: 'my tracking string',
   values: [1, 2, 3, 'a', 'b', 'c'],
-  context: {
+  customContext: {
+    screenWidth: window.screen.width,
     url: window.location.href,
     userAgent: window.navigator.userAgent || null,
     platform: window.navigator.platform || null
@@ -197,7 +191,8 @@ tracker.push({
 {
   "message": "my tracking string",
   "values": [1, 2, 3, "a", "b", "c"],
-  "context": {
+  "customContext": {
+    "screenWidth": 1440,
     "url": "https://nfeld.com/",
     "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36",
     "platform": "MacIntel"
