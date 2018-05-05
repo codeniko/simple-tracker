@@ -148,7 +148,9 @@
 
       startTimer: function(metric) {
         var performance = window.performance
+        /* istanbul ignore else */
         if (performance.now) {
+          /* istanbul ignore if */
           if (timer[metric]) {
             console.warn("Timing metric '" + metric + "' already started")
           }
@@ -164,6 +166,7 @@
         if (performance.now) {
           var stopTime = performance.now()
           var startTime = timer[metric]
+          /* istanbul ignore else */
           if (startTime !== undefined) {
             var diff = Math.round(stopTime - startTime)
             timer[metric] = undefined
@@ -248,8 +251,8 @@
     return tracker
   }
 
-
   var isModule = typeof module !== 'undefined' && module.exports
+  /* istanbul ignore else */
   if (typeof window !== 'undefined') {
     var tracker = simpleTracker(window, window.document) // sets window.tracker
     if (isModule) {

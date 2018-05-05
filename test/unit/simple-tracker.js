@@ -2,6 +2,7 @@
 
 const assert = require('chai').assert
 const sinon = require('sinon')
+const rewire = require('rewire')
 
 const simpleTracker = require('../../index.js')
 
@@ -440,6 +441,33 @@ describe('simple-tracker', function() {
     assert.isTrue(mockRequest.open.notCalled)
     assert.isTrue(mockRequest.send.notCalled)
 
+    done()
+  })
+
+  it('should auto initialize with window object if one exists', function(done) {
+    delete window.tracker // ensure no instance of tracker loaded
+    delete window.SimpleTracker
+    global.window = window
+
+    assert.isUndefined(window.tracker)
+    assert.isUndefined(window.SimpleTracker)
+
+    // window object is now in global, so should be picked up automatically
+    const rTracker = rewire('../../index.js') // rewire loads fresh instance of module
+
+    assert.isDefined(window.SimpleTracker)
+    assert.instanceOf(window.tracker, window.SimpleTracker)
+    assert.instanceOf(rTracker, window.SimpleTracker)
+
+    delete global.window // cleanup
+
+    done()
+  })
+
+  it('dont do anything if data pushed is not an object or string', function(done) {
+    tracker.push(() => {})
+    assert.isTrue(mockRequest.open.notCalled)
+    assert.isTrue(mockRequest.send.notCalled)
     done()
   })
 
