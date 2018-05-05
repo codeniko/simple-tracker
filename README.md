@@ -2,7 +2,7 @@ Simple Tracker
 ===============
 [![NPM version](https://img.shields.io/npm/v/simple-tracker.svg)](https://npmjs.org/package/simple-tracker)
 [![Build Status](https://travis-ci.com/codeniko/simple-tracker.svg?branch=master)](https://travis-ci.com/codeniko/simple-tracker)
-[![Coverage Status](https://coveralls.io/repos/github/codeniko/simple-tracker/badge.svg?branch=master)](https://coveralls.io/github/codeniko/simple-tracker?branch=master)
+[![codecov](https://codecov.io/gh/codeniko/simple-tracker/branch/master/graph/badge.svg)](https://codecov.io/gh/codeniko/simple-tracker)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/codeniko/simple-tracker/blob/master/LICENSE)
 
 A simple javascript client side tracker to send tracking data, including events, logs, and errors.
