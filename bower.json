@@ -6,8 +6,8 @@
   "_originalSource": "simple-tracker",
   "_direct": true,
   "version": "1.0.0",
-  "description": "A simple javascript client-side tracker to log events, metrics, and errors",
-  "main": "dist/simple-tracker.min.js",
+  "description": "Easy javascript tracking library to log events, metrics, errors, and messages",
+  "main": "index.js",
   "keywords": [
     "simple-tracker",
     "logger",

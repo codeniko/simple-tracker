@@ -5,15 +5,15 @@ Simple Tracker
 [![codecov](https://codecov.io/gh/codeniko/simple-tracker/branch/master/graph/badge.svg)](https://codecov.io/gh/codeniko/simple-tracker)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/codeniko/simple-tracker/blob/master/LICENSE)
 
-A simple javascript client side tracker to send tracking data, including events, logs, and errors.
+Easy javascript tracking library to log events, metrics, errors, and messages
 
 You can use Simple Tracker one of two ways. You can install through [npm and use it as a module](#installation-through-npm-as-module), or you can [include the uglified script file in your HTML page](#installation-in-html).
 
 Inspiration
 ------------
-If you run an adblocker or a trackerblocker plugin in your browser, page requests to google analytics and other well known tracking libraries get blocked causing you to lose valuable metrics/logs from your websites. To solve this issue, you would have to write some javascript on the page to instead send this tracking data to an endpoint that won't be blocked by an adblocker, and then configure a server or cloud function to proxy this data to the service of your choice. Simple Tracker is the first piece to that solution. It's a small client that easily sends your tracking data to a configured endpoint.
+If you run an adblocker or a trackerblocker plugin in your browser, page requests to google analytics and other well known tracking libraries get blocked causing you to lose valuable metrics/logs from your websites. To circumvent these blockers, you'd have to write some javascript on your pages to send tracking data to an endpoint that won't be blocked and configure a server or cloud function to proxy this data to a service of your choice. Simple Tracker is the first piece to that solution. It's a light-weight client library that makes sending tracking data simple.
 
-The idea here is adblockers cannot block API requests to endpoints on your own domain since this can potentially cause bad experiences on all websites. Configure Simple Tracker to send tracking data to an API endpoint on your domain.
+If you're looking to connect your tracking data sent from Simple Tracker to a cloud function, [check out this project that uses AWS Lambda](https://github.com/codeniko/log.nfeld.com/blob/master/src/track.js) to proxy data to a free log management service called [Loggly](https://www.loggly.com/).
 
 
 Installation through NPM as module
@@ -28,8 +28,8 @@ import tracker from 'simple-tracker' // or const tracker = require('simple-track
 
 // initialize tracker endpoint and settings
 tracker.push({
-  endpoint: '/my/tracker/server/endpoint', // endpoint to send tracking data to
-  attachClientContext: true, // attach various client context, such as useragent, platform, and page url
+  endpoint: '/my/tracker/server/endpoint', // Endpoint to send tracking data to
+  attachClientContext: true, // Attach various client context, such as useragent, platform, and page url
 });
 ```
 
@@ -51,8 +51,8 @@ Place the following on your page
 
   // initialize tracker endpoint and settings
   tracker.push({
-    endpoint: '/my/tracker/server/endpoint', // endpoint to send tracking data to
-    attachClientContext: true, // attach various client context, such as useragent, platform, and page url
+    endpoint: '/my/tracker/server/endpoint', // Endpoint to send tracking data to
+    attachClientContext: true, // Attach various client context, such as useragent, platform, and page url
   });
 </script>
 ```
