@@ -81,12 +81,7 @@
             xmlHttp.open('POST', endpoint, true) // true for async
             xmlHttp.setRequestHeader('Content-Type', 'application/json')
             xmlHttp.send(JSON.stringify(data))
-          } catch(ex) {
-            if (window.console && typeof window.console.log === 'function') {
-              console.log('Failed to send tracking request because of this exception:\n' + ex)
-              console.log('Failed tracking data:', data)
-            }
-          }
+          } catch(ex) { }
         } else {
           console.debug('SimpleTracker: POST ' + endpoint, data)
         }
@@ -148,16 +143,13 @@
 
       startTimer: function(metric) {
         var performance = window.performance
-        /* istanbul ignore else */
         if (performance.now) {
           /* istanbul ignore if */
-          if (timer[metric]) {
+          if (timer[metric] && devMode) {
             console.warn("Timing metric '" + metric + "' already started")
           }
-          console.debug('timer started for:', metric)
+          devMode && console.debug('timer started for:', metric)
           timer[metric] = performance.now()
-        } else {
-          console.warn('window.performance is not defined')
         }
       },
 
@@ -170,10 +162,10 @@
           if (startTime !== undefined) {
             var diff = Math.round(stopTime - startTime)
             timer[metric] = undefined
-            console.debug('timer stopped for:', metric, 'time=' + diff)
+            devMode && console.debug('timer stopped for:', metric, 'time=' + diff)
             this.logMetric(metric, diff)
           } else {
-            console.warn("Timing metric '" + metric + "' wasn't started")
+            devMode && console.warn("Timing metric '" + metric + "' wasn't started")
           }
         }
       },
