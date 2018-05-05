@@ -223,10 +223,7 @@
 
     var existingTracker = window.tracker // either instance of SimpleTracker or existing array of events to log that were added while this script was being loaded asyncronously
 
-    // reuse SimpleTracker instance if already created
-    if (existingTracker && existingTracker instanceof SimpleTracker) {
-      tracker = existingTracker
-    } else if (existingTracker && existingTracker.length) {
+    if (existingTracker && existingTracker.length) {
       // move all from existing and push into our tracker object
       tracker = new SimpleTracker()
       var i = 0
