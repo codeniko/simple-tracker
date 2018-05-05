@@ -97,9 +97,9 @@ All Configurations
 ```javascript
 tracker.push({
   endpoint: '/ENDPOINT', // Endpoint to send tracking data to
-  sendCaughtExceptions: true/false, // Send exceptions caught by browser. DEFAULT: true
-  attachClientContext: true/false, // Attach various client context, such as useragent, platform, and page url. DEFAULT: true
   sessionId: 'SESSION_ID', // Explicitly set a session id
+  sendCaughtExceptions: true/false, // Send exceptions caught by browser. DEFAULT: false
+  attachClientContext: true/false, // Attach various client context, such as useragent, platform, and page url. DEFAULT: true
   devMode: true/false // Toggle dev mode. If enabled, outgoing requests are blocked and logged for debugging instead. DEFAULT: false
 });
 ```

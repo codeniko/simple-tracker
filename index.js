@@ -12,7 +12,7 @@
     var SESSION_KEY_LENGTH = SESSION_KEY.length + 1
 
     var document = window.document
-    var sendCaughtExceptions = true
+    var sendCaughtExceptions = false
     var attachClientContext = true
     var devMode = false
     var endpoint
@@ -209,9 +209,8 @@
           }
 
           if (data.sendCaughtExceptions !== undefined) {
-            var shouldSend = !!data.sendCaughtExceptions
-            sendCaughtExceptions = shouldSend
-            if (shouldSend) {
+            sendCaughtExceptions = !!data.sendCaughtExceptions
+            if (sendCaughtExceptions) {
               setOnError(this.onerror)
             }
             delete data.sendCaughtExceptions
