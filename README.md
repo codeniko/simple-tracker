@@ -96,11 +96,11 @@ All Configurations
 -----
 ```javascript
 tracker.push({
-  endpoint: '/ENDPOINT', // endpoint to send tracking data to
-  sendCaughtExceptions: true/false, // send exceptions caught by browser. DEFAULT: true
-  attachClientContext: true/false, // attach various client context, such as useragent, platform, and page url. DEFAULT: true
-  sessionId: 'SESSION_ID', // explicitly set a session id
-  devMode: true/false // toggle dev mode. If enabled, outgoing requests are blocked and logged for debugging instead. DEFAULT: false
+  endpoint: '/ENDPOINT', // Endpoint to send tracking data to
+  sendCaughtExceptions: true/false, // Send exceptions caught by browser. DEFAULT: true
+  attachClientContext: true/false, // Attach various client context, such as useragent, platform, and page url. DEFAULT: true
+  sessionId: 'SESSION_ID', // Explicitly set a session id
+  devMode: true/false // Toggle dev mode. If enabled, outgoing requests are blocked and logged for debugging instead. DEFAULT: false
 });
 ```
 
@@ -203,7 +203,7 @@ tracker.push({
 
 Bugs, feature requests, & contributing
 -----
-If you found a bug or want to request a feature, [create a new issue](https://github.com/codeniko/simple-tracker/issues). Contributions are more than welcome :)
+If you found a bug or want to request a feature, [create a new issue](https://github.com/codeniko/simple-tracker/issues). Contributions via pull requests are more than welcome :)
 
 Running unit tests and code coverage
 ----------

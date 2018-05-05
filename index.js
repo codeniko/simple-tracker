@@ -7,10 +7,11 @@
 (function() {
   'use strict'
 
-  function simpleTracker(window, document) {
+  function simpleTracker(window) {
     var SESSION_KEY = 'trcksesh'
     var SESSION_KEY_LENGTH = SESSION_KEY.length + 1
 
+    var document = window.document
     var sendCaughtExceptions = true
     var attachClientContext = true
     var devMode = false
@@ -243,7 +244,7 @@
   var isModule = typeof module !== 'undefined' && module.exports
   /* istanbul ignore else */
   if (typeof window !== 'undefined') {
-    var tracker = simpleTracker(window, window.document) // sets window.tracker
+    var tracker = simpleTracker(window) // sets window.tracker
     if (isModule) {
       simpleTracker.default = tracker
       module.exports = tracker

@@ -41,7 +41,11 @@ describe('simple-tracker', function() {
 
   function reset() {
     onerrorSpy = sinon.spy()
+    document = {
+      cookie: '',
+    }
     window = {
+      document,
       XMLHttpRequest: MockXMLHttpRequest,
       location: {
         href: mockHref,
@@ -55,10 +59,7 @@ describe('simple-tracker', function() {
         now: sinon.stub(),
       }
     }
-    document = {
-      cookie: '',
-    }
-    simpleTracker(window, document) // sets tracker to window object
+    simpleTracker(window) // sets tracker to window object
     mockRequest = sinon.createStubInstance(MockXMLHttpRequest)
     sinon.stub(window, 'XMLHttpRequest').returns(mockRequest)
     tracker = window.tracker
@@ -308,7 +309,7 @@ describe('simple-tracker', function() {
     assert.isTrue(mockRequest.send.notCalled)
 
     // let's load our tracker
-    simpleTracker(window, document)
+    simpleTracker(window)
 
     assert.isTrue(mockRequest.open.calledTwice)
     assert.isTrue(mockRequest.send.calledTwice)
@@ -416,7 +417,7 @@ describe('simple-tracker', function() {
     })
 
     // second load, same window obj
-    simpleTracker(window, document)
+    simpleTracker(window)
     tracker.push({ mockData2 })
 
     assert.isTrue(mockRequest.open.calledTwice)
