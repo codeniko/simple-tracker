@@ -7,10 +7,11 @@
 (function() {
   'use strict'
 
-  function simpleTracker(window, document) {
+  function simpleTracker(window) {
     var SESSION_KEY = 'trcksesh'
     var SESSION_KEY_LENGTH = SESSION_KEY.length + 1
 
+    var document = window.document
     var sendCaughtExceptions = true
     var attachClientContext = true
     var devMode = false
@@ -81,12 +82,7 @@
             xmlHttp.open('POST', endpoint, true) // true for async
             xmlHttp.setRequestHeader('Content-Type', 'application/json')
             xmlHttp.send(JSON.stringify(data))
-          } catch(ex) {
-            if (window.console && typeof window.console.log === 'function') {
-              console.log('Failed to send tracking request because of this exception:\n' + ex)
-              console.log('Failed tracking data:', data)
-            }
-          }
+          } catch(ex) { }
         } else {
           console.debug('SimpleTracker: POST ' + endpoint, data)
         }
@@ -149,13 +145,12 @@
       startTimer: function(metric) {
         var performance = window.performance
         if (performance.now) {
-          if (timer[metric]) {
+          /* istanbul ignore if */
+          if (timer[metric] && devMode) {
             console.warn("Timing metric '" + metric + "' already started")
           }
-          console.debug('timer started for:', metric)
+          devMode && console.debug('timer started for:', metric)
           timer[metric] = performance.now()
-        } else {
-          console.warn('window.performance is not defined')
         }
       },
 
@@ -164,13 +159,14 @@
         if (performance.now) {
           var stopTime = performance.now()
           var startTime = timer[metric]
+          /* istanbul ignore else */
           if (startTime !== undefined) {
             var diff = Math.round(stopTime - startTime)
             timer[metric] = undefined
-            console.debug('timer stopped for:', metric, 'time=' + diff)
+            devMode && console.debug('timer stopped for:', metric, 'time=' + diff)
             this.logMetric(metric, diff)
           } else {
-            console.warn("Timing metric '" + metric + "' wasn't started")
+            devMode && console.warn("Timing metric '" + metric + "' wasn't started")
           }
         }
       },
@@ -228,10 +224,7 @@
 
     var existingTracker = window.tracker // either instance of SimpleTracker or existing array of events to log that were added while this script was being loaded asyncronously
 
-    // reuse SimpleTracker instance if already created
-    if (existingTracker && existingTracker instanceof SimpleTracker) {
-      tracker = existingTracker
-    } else if (existingTracker && existingTracker.length) {
+    if (existingTracker && existingTracker.length) {
       // move all from existing and push into our tracker object
       tracker = new SimpleTracker()
       var i = 0
@@ -248,10 +241,10 @@
     return tracker
   }
 
-
   var isModule = typeof module !== 'undefined' && module.exports
+  /* istanbul ignore else */
   if (typeof window !== 'undefined') {
-    var tracker = simpleTracker(window, window.document) // sets window.tracker
+    var tracker = simpleTracker(window) // sets window.tracker
     if (isModule) {
       simpleTracker.default = tracker
       module.exports = tracker
