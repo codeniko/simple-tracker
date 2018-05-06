@@ -1,8 +1,5 @@
-/*!
-  Copyright (c) 2018 Nikolay Feldman.
-  Licensed under the MIT License (MIT), see
-  https://github.com/codeniko/simple-tracker
-*/
+/*! simple-tracker | MIT *
+ * https://github.com/codeniko/simple-tracker !*/
 
 (function() {
   'use strict'

@@ -5,7 +5,9 @@ module.exports = function (grunt) {
     uglify: {
       options: {
         sourceMap: true,
-        sourceMapName: 'dist/simple-tracker.min.map'
+        sourceMapName: 'dist/simple-tracker.min.map',
+        banner: '/*! <%= pkg.name %> - v<%= pkg.version %> | MIT\n' +
+                  ' * https://github.com/codeniko/simple-tracker */'
       },
       main: {
         files: [{
