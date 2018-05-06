@@ -106,15 +106,17 @@ tracker.push({
 
 Examples
 -----
-`logEvent(event)`: Log an event that occurred
+`logEvent(event, additionalParams)`: Log an event that occurred, with optional additionalParams
 ```javascript
-tracker.logEvent('contact_form_submitted');
+tracker.logEvent('contact_form_submitted', { name: 'niko', fromEmail: 'niko@nfeld.com' });
 
 // Request: POST /endpoint
 {
   "type": "event",
   "event": "contact_form_submitted",
-  "sessionId": "11bf5b37-e0b8-42e0-8dcf-dc8c4aefc000"
+  "sessionId": "11bf5b37-e0b8-42e0-8dcf-dc8c4aefc000",
+  "name": "niko",
+  "fromEmail": "niko@nfeld.com"
 }
 ```
 

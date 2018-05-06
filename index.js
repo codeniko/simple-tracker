@@ -102,11 +102,22 @@
         this.logException(exception)
       },
 
-      logEvent: function(event) {
-        this.push({
+      logEvent: function(event, additionalParams) {
+        var data = {
           type: 'event',
           event: event
-        })
+        }
+
+        // if additional params defined, copy them over
+        if (typeof additionalParams == 'object') {
+          for (var prop in additionalParams) {
+            if (additionalParams.hasOwnProperty(prop)) {
+              data[prop] = additionalParams[prop]
+            }
+          }
+        }
+
+        this.push(data)
       },
 
       logException: function(exception) {

@@ -326,18 +326,30 @@ describe('simple-tracker', function() {
     done()
   })
 
-  it('should log events', function(done) {
+  it('should log events and events with params', function(done) {
     tracker.push({
       endpoint: mockEndpoint,
       sessionId:  mockSessionId,
       attachClientContext: false,
     })
+
+    // log event without additional params
     tracker.logEvent(mockData1)
 
     assertSentRequest(mockEndpoint, {
       type: 'event',
       event: mockData1,
       sessionId: mockSessionId,
+    })
+
+    // log event with additional params
+    tracker.logEvent(mockData1, { mockData2 })
+
+    assertSentRequest(mockEndpoint, {
+      type: 'event',
+      event: mockData1,
+      sessionId: mockSessionId,
+      mockData2,
     })
     done()
   })
