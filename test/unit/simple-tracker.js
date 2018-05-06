@@ -292,6 +292,42 @@ describe('simple-tracker', function() {
     done()
   })
 
+  it('should persist additional client context values', function(done) {
+    tracker.push({
+      endpoint: mockEndpoint,
+      sessionId:  mockSessionId,
+      attachClientContext: true,
+    })
+
+    // assign additional values to client object
+    tracker.clientContext.mockData2 = mockData2
+    tracker.push({ mockData1 })
+
+    assertSentRequest(mockEndpoint, {
+      mockData1,
+      sessionId: mockSessionId,
+      context: {
+        platform: mockPlatform,
+        url: mockHref,
+        userAgent: mockUserAgent,
+        mockData2,
+      },
+    })
+
+    // overwrite client object
+    tracker.clientContext = { mockData1, mockData2 }
+    tracker.push({ mockData1 })
+    assertSentRequest(mockEndpoint, {
+      mockData1,
+      sessionId: mockSessionId,
+      context: {
+        mockData1,
+        mockData2,
+      },
+    })
+    done()
+  })
+
   it('should send data that was pushed prior to loading tracker', function(done) {
     const initialTracker = []
     window.tracker = initialTracker

@@ -16,7 +16,6 @@
     var sessionId
     var tracker
     var timer = {}
-    var clientContext
 
     function uuidv4(a) {
       return a?(a^Math.random()*16>>a/4).toString(16):([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,uuidv4)
@@ -35,15 +34,11 @@
     }
 
     function getClientContext() {
-      // get cached context, or create one
-      if (!clientContext) {
-        clientContext = {
-          url: window.location.href,
-          userAgent: window.navigator.userAgent || null,
-          platform: window.navigator.platform || null
-        }
+      return {
+        url: window.location.href,
+        userAgent: window.navigator.userAgent || null,
+        platform: window.navigator.platform || null
       }
-      return clientContext
     }
 
     function readCookie() {
@@ -69,7 +64,7 @@
       if (endpoint && Object.keys(data).length > 0) {
         data.sessionId = sessionId
         if (attachClientContext) {
-          data.context = getClientContext()
+          data.context = tracker.clientContext
         }
 
         if (!devMode) {
@@ -86,7 +81,9 @@
       }
     }
 
-    function SimpleTracker() {}
+    function SimpleTracker() {
+      this.clientContext = getClientContext()
+    }
 
     SimpleTracker.prototype = {
 

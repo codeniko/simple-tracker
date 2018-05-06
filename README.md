@@ -92,16 +92,31 @@ Session Id
 -----
 Simple Tracker makes use of cookies to persist the sessionId that accompanies all tracking data. If the sessionId is not explicitly set in [configuration](#all-configurations), one will be generated as a UUIDv4 string. Regardless if explicitly set or generated, the sessionId will be stored in a cookie named `trcksesh` and will be destroyed when session ends (browser closes)
 
-All Configurations
+All configurations
 -----
 ```javascript
 tracker.push({
   endpoint: '/ENDPOINT', // Endpoint to send tracking data to
   sessionId: 'SESSION_ID', // Explicitly set a session id
   sendCaughtExceptions: true/false, // Send exceptions caught by browser. DEFAULT: false
-  attachClientContext: true/false, // Attach various client context, such as useragent, platform, and page url. DEFAULT: true
+  attachClientContext: true/false, // Attach client context. Includes: useragent, platform, and page url. [You can add more](#adding-to-client-context-object) DEFAULT: true
   devMode: true/false // Toggle dev mode. If enabled, outgoing requests are blocked and logged for debugging instead. DEFAULT: false
 });
+```
+
+Adding to client context object
+-----
+You can add your own values to persist inside of the client context object, or even overwrite the object entirely. You can access the object with `tracker.clientContext`. Any values you add to the clientContext object will go out on every tracking request
+```javascript
+// assign more values
+tracker.clientContext.username = 'codeniko',
+tracker.clientContext.location = 'San Francisco, CA'
+
+// overwriting context entirely
+tracker.clientContext = {
+  username = 'codeniko',
+  location = 'San Francisco, CA'
+}
 ```
 
 Examples

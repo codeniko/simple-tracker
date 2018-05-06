@@ -21,6 +21,10 @@
         devMode: true, // Block outgoing network requests and log them instead
       })
 
+      // add additional values to client context to be sent with all requests
+      tracker.clientContext.username = 'codeniko',
+      tracker.clientContext.location = 'San Francisco, CA'
+
       // example event to log
       tracker.logEvent('page_view')
 
