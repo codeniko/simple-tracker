@@ -5,7 +5,7 @@
   "_target": "*",
   "_originalSource": "simple-tracker",
   "_direct": true,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Easy javascript tracking library to log events, metrics, errors, and messages",
   "main": "index.js",
   "keywords": [
