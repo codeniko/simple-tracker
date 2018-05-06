@@ -45,10 +45,8 @@ Installation in HTML
 ------------
 Place the following on your page
 ```html
-<script type="text/javascript" src="/dist/simple-tracker.min.js" async></script>
+<script type="text/javascript" src="https://codeniko.github.io/simple-tracker/dist/simple-tracker.min.js"></script>
 <script>
-  var tracker = tracker || [];
-
   // initialize tracker endpoint and settings
   tracker.push({
     endpoint: '/my/tracker/server/endpoint', // Endpoint to send tracking data to
@@ -56,6 +54,8 @@ Place the following on your page
   });
 </script>
 ```
+
+Here is a live example page: [https://codeniko.github.io/simple-tracker/examplepage.html](https://codeniko.github.io/simple-tracker/examplepage.html)
 
 Quick Usage
 -----

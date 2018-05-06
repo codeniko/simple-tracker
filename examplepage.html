@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple-Tracker example</title>
+  </head>
+  <body>
+    <h2>Simple-Tracker example</h2>
+    <a href="https://github.com/codeniko/simple-tracker">https://github.com/codeniko/simple-tracker</a><br><br>
+
+    Open up the console through devTools to see the tracker in action. Refresh the page to restart
+
+
+    <script type="text/javascript" src="dist/simple-tracker.min.js"></script>
+
+    <script>
+      // initialize tracker endpoint and settings
+      tracker.push({
+        endpoint: '/api/track', // Endpoint to send tracking data to
+        attachClientContext: true, // Attach various client context, such as useragent, platform, and page url
+        sendCaughtExceptions: true,
+        devMode: true, // Block outgoing network requests and log them instead
+      })
+
+      // example event to log
+      tracker.logEvent('page_view')
+
+
+      // example metric
+      tracker.logMetric('num_resources_fetched', 1)
+
+
+      // Example message that get's logged every 5 seconds
+      var count = 1
+      var intervalId = setInterval(function() {
+        tracker.logMessage('This message gets logged every 5 seconds, up to 5 times. Count=' + count++)
+        if (count === 6) {
+          clearInterval(intervalId)
+        }
+      }, 5000)
+
+
+      // Example of starting/stopping a timer to record a metric.
+      setTimeout(function() {
+        tracker.startTimer('time_taken')
+      }, 1000)
+
+      setTimeout(function() {
+        tracker.stopTimer('time_taken')
+      }, 3400)
+
+
+      // Example of exception being thrown, caught, and logged
+      setTimeout(function() {
+        window.doesNotExist.ohno // reference an undefined object's property, throw error
+      }, 8000)
+    </script>
+  </body>
+</html>
