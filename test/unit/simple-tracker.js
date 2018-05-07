@@ -22,6 +22,7 @@ describe('simple-tracker', function() {
   const mockSessionId = '**SESSION_ID**'
   const mockData1 = '**DATA1**'
   const mockData2 = '**DATA2**'
+  const mockData3 = '**DATA3**'
   const mockHref = '**HREF**'
   const mockUserAgent = '**USER_AGENT**'
   const mockPlatform = '**PLATFORM**'
@@ -328,6 +329,26 @@ describe('simple-tracker', function() {
     done()
   })
 
+  it('should support GET request', function(done) {
+    const data = {
+      endpoint: mockEndpoint,
+      sessionId:  mockSessionId,
+      attachClientContext: false,
+      httpMethod: 'GET',
+      mockData1,
+      mockData2,
+    }
+    // add some more query params to persist
+    tracker.addQueryParam('mockData3', mockData3)
+    tracker.push(data)
+
+    const expectedEndpoint = mockEndpoint + '?data=' + encodeURIComponent(JSON.stringify(data)) + '&mockData3=' + mockData3
+    const openSpy = mockRequest.open.getCall(0)
+    assert.equal(openSpy.args[0], 'GET')
+    assert.equal(openSpy.args[1], expectedEndpoint)
+    done()
+  })
+
   it('should send data that was pushed prior to loading tracker', function(done) {
     const initialTracker = []
     window.tracker = initialTracker
@@ -479,6 +500,7 @@ describe('simple-tracker', function() {
   })
 
   it('dont send request out in devMode', function(done) {
+    // POST
     tracker.push({
       endpoint: mockEndpoint,
       sessionId:  mockSessionId,
@@ -486,6 +508,13 @@ describe('simple-tracker', function() {
     })
 
     tracker.push({ mockData1 })
+
+    assert.isTrue(mockRequest.open.notCalled)
+    assert.isTrue(mockRequest.send.notCalled)
+
+    // GET
+    tracker.push({ httpMethod: 'get' })
+    tracker.push({ mockData2 })
 
     assert.isTrue(mockRequest.open.notCalled)
     assert.isTrue(mockRequest.send.notCalled)

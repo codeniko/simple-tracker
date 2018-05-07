@@ -18,8 +18,10 @@
         endpoint: '/api/track', // Endpoint to send tracking data to
         attachClientContext: true, // Attach various client context, such as useragent, platform, and page url
         sendCaughtExceptions: true,
+        httpMethod: 'get',
         devMode: true, // Block outgoing network requests and log them instead
       })
+      tracker.addQueryParam('domain', 'niko.com')
 
       // add additional values to client context to be sent with all requests
       tracker.clientContext.username = 'codeniko',

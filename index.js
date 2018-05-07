@@ -7,6 +7,9 @@
   function simpleTracker(window) {
     var SESSION_KEY = 'trcksesh'
     var SESSION_KEY_LENGTH = SESSION_KEY.length + 1
+    var GET_REQUEST_DATA_KEY = 'data'
+    var GET = 'GET'
+    var POST = 'POST'
 
     var document = window.document
     var sendCaughtExceptions = false
@@ -16,6 +19,8 @@
     var sessionId
     var tracker
     var timer = {}
+    var httpMethod = POST
+    var persistingQueryParams = {} // user added query params for GET requests only
 
     function uuidv4(a) {
       return a?(a^Math.random()*16>>a/4).toString(16):([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,uuidv4)
@@ -60,6 +65,24 @@
       setCookie(sessionId)
     }
 
+    // own shallow variant of Object.assign since not all browsers support it.
+    function objectAssign(dest, src) {
+      for (var prop in src) {
+        if (src.hasOwnProperty(prop)) {
+          dest[prop] = src[prop]
+        }
+      }
+    }
+
+    function endpointWithQs(data) {
+      var queryParams = [ GET_REQUEST_DATA_KEY+'='+encodeURIComponent(JSON.stringify(data)) ]
+      // append user set query params
+      for (var key in persistingQueryParams) {
+        persistingQueryParams.hasOwnProperty(key) && queryParams.push(key+'='+encodeURIComponent(persistingQueryParams[key]))
+      }
+      return endpoint + '?' + queryParams.join('&')
+    }
+
     function track(data) {
       if (endpoint && Object.keys(data).length > 0) {
         data.sessionId = sessionId
@@ -69,14 +92,24 @@
 
         if (!devMode) {
           try {
+            var isGetRequest = httpMethod === GET
+
             // let's not use fetch to avoid a polyfill
             var xmlHttp = new window.XMLHttpRequest()
-            xmlHttp.open('POST', endpoint, true) // true for async
-            xmlHttp.setRequestHeader('Content-Type', 'application/json')
-            xmlHttp.send(JSON.stringify(data))
+            xmlHttp.open(httpMethod, isGetRequest ? endpointWithQs(data) : endpoint, true) // true for async
+            if (isGetRequest) {
+              xmlHttp.send()
+            } else {
+              xmlHttp.setRequestHeader('Content-Type', 'application/json')
+              xmlHttp.send(JSON.stringify(data))
+            }
           } catch(ex) { }
         } else {
-          console.debug('SimpleTracker: POST ' + endpoint, data)
+          if (httpMethod === POST) {
+            console.debug('SimpleTracker: POST ' + endpoint, data)
+          } else {
+            console.debug('SimpleTracker: GET ' + endpointWithQs(data))
+          }
         }
       }
     }
@@ -106,13 +139,7 @@
         }
 
         // if additional params defined, copy them over
-        if (typeof additionalParams == 'object') {
-          for (var prop in additionalParams) {
-            if (additionalParams.hasOwnProperty(prop)) {
-              data[prop] = additionalParams[prop]
-            }
-          }
-        }
+        typeof additionalParams == 'object' && objectAssign(data, additionalParams)
 
         this.push(data)
       },
@@ -176,6 +203,10 @@
         }
       },
 
+      addQueryParam: function(key, value) {
+        persistingQueryParams[key] = value
+      },
+
       push: function(data) {
         var type = typeof data
 
@@ -211,6 +242,11 @@
             }
             endpoint = data.endpoint
             delete data.endpoint
+          }
+
+          if (typeof data.httpMethod === 'string') {
+            httpMethod = data.httpMethod.toUpperCase() === GET ? GET : POST // only support GET or POST
+            delete data.httpMethod
           }
 
           if (data.sendCaughtExceptions !== undefined) {
