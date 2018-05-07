@@ -3,6 +3,7 @@ Simple Tracker
 [![NPM version](https://img.shields.io/npm/v/simple-tracker.svg)](https://npmjs.org/package/simple-tracker)
 [![Build Status](https://travis-ci.com/codeniko/simple-tracker.svg?branch=master)](https://travis-ci.com/codeniko/simple-tracker)
 [![codecov](https://codecov.io/gh/codeniko/simple-tracker/branch/master/graph/badge.svg)](https://codecov.io/gh/codeniko/simple-tracker)
+[![dependencies](https://david-dm.org/codeniko/simple-tracker.svg)](https://david-dm.org/codeniko/simple-tracker)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/codeniko/simple-tracker/blob/master/LICENSE)
 
 Easy javascript tracking library to log events, metrics, errors, and messages
@@ -28,7 +29,7 @@ import tracker from 'simple-tracker' // or const tracker = require('simple-track
 
 // initialize tracker endpoint and settings
 tracker.push({
-  endpoint: '/my/tracker/server/endpoint', // Endpoint to send tracking data to
+  endpoint: '/endpoint', // Endpoint to send tracking data to
   attachClientContext: true, // Attach various client context, such as useragent, platform, and page url
 });
 ```
@@ -43,13 +44,13 @@ tracker.push({ event: 'pageview' })
 
 Installation in HTML
 ------------
-Place the following on your page
+Place the following on your page. While you can use the script at the [CDN link](https://unpkg.com/simple-tracker@latest/dist/simple-tracker.min.js) below, I recommend you to download the script and host it yourself.
 ```html
-<script type="text/javascript" src="https://codeniko.github.io/simple-tracker/dist/simple-tracker.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/simple-tracker@latest/dist/simple-tracker.min.js"></script>
 <script>
   // initialize tracker endpoint and settings
   tracker.push({
-    endpoint: '/my/tracker/server/endpoint', // Endpoint to send tracking data to
+    endpoint: '/endpoint', // Endpoint to send tracking data to
     attachClientContext: true, // Attach various client context, such as useragent, platform, and page url
   });
 </script>
@@ -96,10 +97,10 @@ All configurations
 -----
 ```javascript
 tracker.push({
-  endpoint: '/ENDPOINT', // Endpoint to send tracking data to
+  endpoint: '/endpoint', // Endpoint to send tracking data to
   sessionId: 'SESSION_ID', // Explicitly set a session id
   sendCaughtExceptions: true/false, // Send exceptions caught by browser. DEFAULT: false
-  attachClientContext: true/false, // Attach client context. Includes: useragent, platform, and page url. [You can add more](#adding-to-client-context-object) DEFAULT: true
+  attachClientContext: true/false, // Attach client context. Includes: useragent, platform, and page url. DEFAULT: true
   devMode: true/false // Toggle dev mode. If enabled, outgoing requests are blocked and logged for debugging instead. DEFAULT: false
 });
 ```
@@ -196,11 +197,9 @@ tracker.stopTimer('page_load_time');
 tracker.push({
   message: 'my tracking string',
   values: [1, 2, 3, 'a', 'b', 'c'],
-  customContext: {
-    screenWidth: window.screen.width,
-    url: window.location.href,
-    userAgent: window.navigator.userAgent || null,
-    platform: window.navigator.platform || null
+  userMap: {
+    codeniko: 1234,
+    chance: 8888
   }
 });
 
@@ -208,11 +207,9 @@ tracker.push({
 {
   "message": "my tracking string",
   "values": [1, 2, 3, "a", "b", "c"],
-  "customContext": {
-    "screenWidth": 1440,
-    "url": "https://nfeld.com/",
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36",
-    "platform": "MacIntel"
+  "userMap": {
+    "codeniko": 1234,
+    "chance": 8888
   },
   "sessionId": "11bf5b37-e0b8-42e0-8dcf-dc8c4aefc000"
 }

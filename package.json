@@ -15,10 +15,14 @@
   },
   "author": "Nikolay Feldman",
   "keywords": [
-    "simple-tracker",
-    "logger",
+    "simple tracker",
     "tracker",
-    "simple",
+    "track",
+    "instrumentation",
+    "i13n",
+    "analytics",
+    "log management",
+    "logger",
     "jslogger",
     "log"
   ],
