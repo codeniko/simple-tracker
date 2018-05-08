@@ -2,6 +2,14 @@
 <html>
   <head>
     <title>Simple-Tracker example</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-116910991-2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-116910991-2');
+    </script>
   </head>
   <body>
     <h2>Simple-Tracker example</h2>
@@ -22,41 +30,59 @@
       })
 
       // add additional values to client context to be sent with all requests
+      console.log('example to add additional values to client context')
       tracker.clientContext.username = 'codeniko',
       tracker.clientContext.location = 'San Francisco, CA'
+      newline()
 
       // example event to log
+      console.log('logEvent example')
       tracker.logEvent('page_view')
+      newline()
 
 
       // example metric
+      console.log('logMetric example')
       tracker.logMetric('num_resources_fetched', 1)
+      newline()
 
 
       // Example message that get's logged every 5 seconds
       var count = 1
       var intervalId = setInterval(function() {
+        console.log('logMessage example')
         tracker.logMessage('This message gets logged every 5 seconds, up to 5 times. Count=' + count++)
         if (count === 6) {
           clearInterval(intervalId)
         }
+        newline()
       }, 5000)
 
 
       // Example of starting/stopping a timer to record a metric.
       setTimeout(function() {
+        console.log('startTimer example')
         tracker.startTimer('time_taken')
+        newline()
       }, 1000)
 
       setTimeout(function() {
+        console.log('endTimer example, should fire metric request')
         tracker.stopTimer('time_taken')
+        newline()
       }, 3400)
 
 
       // Example of exception being thrown, caught, and logged
       setTimeout(function() {
+        console.log('caught exception example')
         window.doesNotExist.ohno // reference an undefined object's property, throw error
       }, 8000)
+
+
+      function newline() {
+        console.log('')
+      }
     </script>
   </body>
 </html>

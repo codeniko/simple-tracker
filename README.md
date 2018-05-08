@@ -40,6 +40,7 @@ import tracker from 'simple-tracker' // or const tracker = require('simple-track
 
 tracker.push({ event: 'pageview' })
 ```
+Here is a live example page: [https://codeniko.github.io/simple-tracker/examplepage.html](https://codeniko.github.io/simple-tracker/examplepage.html)
 
 
 Installation in HTML
@@ -122,6 +123,9 @@ tracker.clientContext = {
 
 Examples
 -----
+Here is a live example page showing all of the convenience functions:  
+[https://codeniko.github.io/simple-tracker/examplepage.html](https://codeniko.github.io/simple-tracker/examplepage.html)
+
 `logEvent(event, additionalParams)`: Log an event that occurred, with optional additionalParams
 ```javascript
 tracker.logEvent('contact_form_submitted', { name: 'niko', fromEmail: 'niko@nfeld.com' });
