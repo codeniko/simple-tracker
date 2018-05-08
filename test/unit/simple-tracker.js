@@ -208,6 +208,31 @@ describe('simple-tracker', function() {
     done()
   })
 
+  it('should honor attachSessionId flag', function(done) {
+    // should send session Id
+    tracker.push({
+      endpoint: mockEndpoint,
+      attachClientContext: false,
+      attachSessionId: true,
+      sessionId:  mockSessionId,
+      mockData1,
+    })
+    assertSentRequest(mockEndpoint, {
+      mockData1,
+      sessionId: mockSessionId,
+    })
+
+    // should not send session id
+    tracker.push({
+      attachSessionId: false,
+      mockData2,
+    })
+    assertSentRequest(mockEndpoint, {
+      mockData2,
+    })
+    done()
+  })
+
   it('should accept data of type "text"', function(done) {
     tracker.push({
       endpoint: mockEndpoint,

@@ -101,7 +101,8 @@ tracker.push({
   endpoint: '/endpoint', // Endpoint to send tracking data to
   sessionId: 'SESSION_ID', // Explicitly set a session id
   sendCaughtExceptions: true/false, // Send exceptions caught by browser. DEFAULT: false
-  attachClientContext: true/false, // Attach client context. Includes: useragent, platform, and page url. DEFAULT: true
+  attachClientContext: true/false, // Attach client context to requests. Includes: useragent, platform, and page url. DEFAULT: true
+  attachSessionId: true/false, // Attach sessionId to requests. DEFAULT: true
   devMode: true/false // Toggle dev mode. If enabled, outgoing requests are blocked and logged for debugging instead. DEFAULT: false
 });
 ```

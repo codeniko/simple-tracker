@@ -11,6 +11,7 @@
     var document = window.document
     var sendCaughtExceptions = false
     var attachClientContext = true
+    var attachSessionId = true
     var devMode = false
     var endpoint
     var sessionId
@@ -62,7 +63,9 @@
 
     function track(data) {
       if (endpoint && Object.keys(data).length > 0) {
-        data.sessionId = sessionId
+        if (attachSessionId) {
+          data.sessionId = sessionId
+        }
         if (attachClientContext) {
           data.context = tracker.clientContext
         }
@@ -197,6 +200,11 @@
           if (data.attachClientContext !== undefined) {
             attachClientContext = !!data.attachClientContext
             delete data.attachClientContext
+          }
+
+          if (data.attachSessionId !== undefined) {
+            attachSessionId  = !!data.attachSessionId
+            delete data.attachSessionId
           }
 
           if (data.sessionId) {
