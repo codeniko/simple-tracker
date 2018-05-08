@@ -6,15 +6,15 @@ Simple Tracker
 [![dependencies](https://david-dm.org/codeniko/simple-tracker.svg)](https://david-dm.org/codeniko/simple-tracker)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/codeniko/simple-tracker/blob/master/LICENSE)
 
-Easy javascript tracking library to log events, metrics, errors, and messages
+Easy client-side tracking library to log events, metrics, errors, and messages. Send data to any server endpoint for log management and event tracking services like Google Analytics, Splunk, ELK/Logstash, Loggly, Open Web Analytics, etc...
 
-You can use Simple Tracker one of two ways. You can install through [npm and use it as a module](#installation-through-npm-as-module), or you can [include the uglified script file in your HTML page](#installation-in-html).
+You can make use of Simple Tracker one of two ways. You can install through [npm and use it as a module](#installation-through-npm-as-module), or you can [include the uglified script file in your HTML page](#installation-in-html).
 
 Inspiration
 ------------
 If you run an adblocker or a trackerblocker plugin in your browser, page requests to google analytics and other well known tracking libraries get blocked causing you to lose valuable metrics/logs from your websites. To circumvent these blockers, you'd have to write some javascript on your pages to send tracking data to an endpoint that won't be blocked and configure a server or cloud function to proxy this data to a service of your choice. Simple Tracker is the first piece to that solution. It's a light-weight client library that makes sending tracking data simple.
 
-If you're looking to connect your tracking data sent from Simple Tracker to a cloud function, [check out this project that uses AWS Lambda](https://github.com/codeniko/log.nfeld.com/blob/master/src/track.js) to proxy data to a free log management service called [Loggly](https://www.loggly.com/).
+If you're looking to connect your tracking data sent from Simple Tracker to a cloud function, [check out this AWS Lambda function](https://github.com/codeniko/log.nfeld.com/blob/master/src/track.js) which proxies the data to a free log management service called [Loggly](https://www.loggly.com/).
 
 
 Installation through NPM as module

@@ -1,7 +1,7 @@
 {
   "name": "simple-tracker",
   "version": "1.1.1",
-  "description": "Easy javascript tracking library to log events, metrics, errors, and messages",
+  "description": "Easy client-side tracking library to log events, metrics, errors, and messages",
   "main": "dist/simple-tracker.min.js",
   "repository": {
     "type": "git",
