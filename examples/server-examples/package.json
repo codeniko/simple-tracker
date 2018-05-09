@@ -1,0 +1,32 @@
+{
+  "name": "google-analytics-aws-proxy",
+  "version": "0.1.0",
+  "author": "Nikolay Feldman<niko@nfeld.com>",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:codeniko/simple-tracker.git"
+  },
+  "private": true,
+  "scripts": {
+    "build": "netlify-lambda build aws-lambda",
+    "serve": "netlify-lambda serve aws-lambda",
+    "clean": "rm -rf ./npm-debug.log ./build"
+  },
+  "dependencies": {
+    "querystring": "^0.2.0",
+    "request": "^2.85.0",
+    "uuid": "^3.2.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0-beta.44",
+    "netlify-lambda": "^1.0.0-babel-7-beta"
+  },
+  "proxy": {
+    "/.netlify/functions": {
+      "target": "http://localhost:9000",
+      "pathRewrite": {
+        "^/\\.netlify/functions": ""
+      }
+    }
+  }
+}

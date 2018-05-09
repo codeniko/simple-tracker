@@ -14,7 +14,7 @@ Inspiration
 ------------
 If you run an adblocker or a trackerblocker plugin in your browser, page requests to google analytics and other well known tracking libraries get blocked causing you to lose valuable metrics/logs from your websites. To circumvent these blockers, you'd have to write some javascript on your pages to send tracking data to an endpoint that won't be blocked and configure a server or cloud function to proxy this data to a service of your choice. Simple Tracker is the first piece to that solution. It's a light-weight client library that makes sending tracking data simple.
 
-If you're looking to connect your tracking data sent from Simple Tracker to a cloud function, [check out this AWS Lambda function](https://github.com/codeniko/log.nfeld.com/blob/master/src/track.js) which proxies the data to a free log management service called [Loggly](https://www.loggly.com/).
+If you're looking to connect your tracking data sent from Simple Tracker to a cloud function, [check out these example AWS Lambda functions](examples/server-examples) which proxies the data to a free log management service called [Loggly](https://www.loggly.com/).
 
 
 Installation through NPM as module
@@ -40,7 +40,7 @@ import tracker from 'simple-tracker' // or const tracker = require('simple-track
 
 tracker.push({ event: 'pageview' })
 ```
-Here is a live example page: [https://codeniko.github.io/simple-tracker/examplepage.html](https://codeniko.github.io/simple-tracker/examplepage.html)
+Here is a live example page: [https://codeniko.github.io/simple-tracker/examples/all-functions.html](https://codeniko.github.io/simple-tracker/examples/all-functions.html)
 
 
 Installation in HTML
@@ -57,7 +57,7 @@ Place the following on your page. While you can use the script at the [CDN link]
 </script>
 ```
 
-Here is a live example page: [https://codeniko.github.io/simple-tracker/examplepage.html](https://codeniko.github.io/simple-tracker/examplepage.html)
+Here is a live example page: [https://codeniko.github.io/simple-tracker/examples/all-functions.html](https://codeniko.github.io/simple-tracker/examples/all-functions.html)
 
 Quick Usage
 -----
@@ -88,7 +88,7 @@ This will send a POST request containing a sessionId, and client context if enab
 }
 ```
 
-There are also several helper methods defined to push common tracking data such as `tracker.logEvent(event)`, `tracker.logMessage('message')`, and `tracker.logMetric('metric', 'value')`. [You can find examples of these and more below.](#examples)
+There are also several convenience functions defined to push common tracking data such as `tracker.logEvent(event)`, `tracker.logMessage('message')`, and `tracker.logMetric('metric', 'value')`. [You can find examples of these and more below.](#tracker-functions)
 
 Session Id
 -----
@@ -122,10 +122,10 @@ tracker.clientContext = {
 }
 ```
 
-Examples
+Tracker functions
 -----
 Here is a live example page showing all of the convenience functions:  
-[https://codeniko.github.io/simple-tracker/examplepage.html](https://codeniko.github.io/simple-tracker/examplepage.html)
+[https://codeniko.github.io/simple-tracker/examples/all-functions.html](https://codeniko.github.io/simple-tracker/examples/all-functions.html)
 
 `logEvent(event, additionalParams)`: Log an event that occurred, with optional additionalParams
 ```javascript
