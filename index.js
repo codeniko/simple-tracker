@@ -109,7 +109,7 @@
         }
 
         // if additional params defined, copy them over
-        if (typeof additionalParams == 'object') {
+        if (typeof additionalParams === 'object') {
           for (var prop in additionalParams) {
             if (additionalParams.hasOwnProperty(prop)) {
               data[prop] = additionalParams[prop]
