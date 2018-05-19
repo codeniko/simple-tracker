@@ -3,6 +3,7 @@ Simple Tracker
 [![NPM version](https://img.shields.io/npm/v/simple-tracker.svg)](https://npmjs.org/package/simple-tracker)
 [![Build Status](https://travis-ci.com/codeniko/simple-tracker.svg?branch=master)](https://travis-ci.com/codeniko/simple-tracker)
 [![codecov](https://codecov.io/gh/codeniko/simple-tracker/branch/master/graph/badge.svg)](https://codecov.io/gh/codeniko/simple-tracker)
+[![gzip size](http://img.badgesize.io/https://unpkg.com/simple-tracker@latest/dist/simple-tracker.min.js?compression=gzip)
 [![dependencies](https://david-dm.org/codeniko/simple-tracker.svg)](https://david-dm.org/codeniko/simple-tracker)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/codeniko/simple-tracker/blob/master/LICENSE)
 
