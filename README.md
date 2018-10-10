@@ -221,6 +221,13 @@ tracker.push({
 }
 ```
 
+Examples out in production
+-----
+You can find Simple Tracker used on the following websites. For some fun, ensure your adblocker is enabled, open up devtool console, refresh/navigate the pages and observe network requests to `/ga` for google analytics pageviews and `/track` for log messages.  
+[https://jessicalchang.com](https://jessicalchang.com)  
+[https://nfeld.com](https://nfeld.com)
+
+
 Bugs, feature requests, & contributing
 -----
 If you found a bug or want to request a feature, [create a new issue](https://github.com/codeniko/simple-tracker/issues). Contributions via pull requests are more than welcome :)
