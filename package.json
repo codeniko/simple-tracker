@@ -1,6 +1,6 @@
 {
   "name": "simple-tracker",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Easy client-side tracking library to log events, metrics, errors, and messages",
   "main": "dist/simple-tracker.min.js",
   "repository": {
@@ -11,6 +11,7 @@
     "build": "grunt",
     "unit-test": "ENV=tests ./node_modules/.bin/_mocha -R spec ./test/unit/**/*.js ./test/unit/**/**/*.js",
     "test": "nyc --reporter=html --reporter=text npm run unit-test",
+    "preversion": "npm test",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov"
   },
   "author": "Nikolay Feldman",
